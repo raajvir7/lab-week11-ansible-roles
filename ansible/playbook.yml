@@ -3,10 +3,10 @@
   hosts: server_role_frontend_server
   become: true
   roles:
-    - frontend
+    - frontend_server
 
 - name: Configure Redis (Rocky)
   hosts: server_role_redis_server
   become: true
   roles:
-    - backend
+    - redis_server
