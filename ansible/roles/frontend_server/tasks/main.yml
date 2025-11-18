@@ -1,0 +1,29 @@
+---
+- name: Install nginx on Ubuntu
+  apt:
+    name: nginx
+    state: present
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  notify: reload nginx
+
+- name: Create index.html
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  notify: reload nginx
+
+- name: Create nginx configuration
+  copy:
+    src: default.conf
+    dest: /etc/nginx/sites-available/default
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  notify: reload nginx
+
+- name: Enable nginx configuration
+  file:
+    src: /etc/nginx/sites-available/default
+    dest: /etc/nginx/sites-enabled/default
+    state: link
+  when: ansible_facts['distribution'] == 'Ubuntu'
+  notify: reload nginx
